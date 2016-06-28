@@ -2,48 +2,24 @@
  * In this file you should write your main styles. (or centralize your imports)
  * Import this file using the following HTML or equivalent:
  * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
-// #8A0651
-// #FFFFFF
-// #000000
-// #424242
-// #F2EFE4 оливка
-// #CB8C1D коричн
-// #4C3327 темный
-// #BD3632 красны
+
 @import "compass/reset";
 
 $bgHeader:#444;
-// $bgHeader:#111;
-
 $bodybg:#f9f9f9;
-
-// $bgl:#677676; //light
-// $bg:#aab7c0; // norm
-// $bgd:#677676; //dark
-
 $bgl:#999; //light
 $bg:#999; // norm
 $bgd:#999; //dark
-
 $textl: #fff; //light
 $textd: #3E3E3E; //dark
-
-// $borderl: #EDF4FA;
-// $border: #CBD2D8;
-// $borderd: #686B6E;
-
 $borderl: #999;
 $border: #999;
 $borderd: #999;
-
 $danger: #FF7777;
 $dangerd:#FF2C2C;
-
 $btnd : #C1BFA9; //dark
 $btn: #ecead4;//norm
 $btnh: #CDCBB5;//hover
-
-
 $successl:#A5ED97;
 $success:#7EC670;
 $successd:#2C902C;

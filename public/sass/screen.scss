@@ -197,22 +197,6 @@ $successd:#2C902C;
 // #=============================================
 		//web assistant
 	
-//hamburger
-// .hamburger {
-// 	padding: 0;
-// 	margin-top: 7px;
-// 	margin-left: 40px;
-// 	display: none;
-// 	float: left;
-// 	@media (max-width:1200px) {
-// 		display: block;
-// 	}
-// }
-// .hamburger-inner, 
-// .hamburger-inner:after, 
-// .hamburger-inner:before {
-// 	background-color:  #fff;
-// }
 //bg spinner
 	#main_bg_spinner,
 	#bg_spinner {
@@ -373,47 +357,10 @@ $successd:#2C902C;
 				}
 			}
 		}
-		// @media (max-width:1200px) {
-		// 	display: -webkit-box;
-		// 	display: -ms-flexbox;
-		// 	display: flex;
-		// 	-webkit-box-orient: horizontal;
-		// 	-webkit-box-direction: normal;
-		// 	-ms-flex-direction: row ;
-		// 	flex-direction: row ;
-		// 	-webkit-box-align: center;
-		// 	-ms-flex-align: center;
-		// 	align-items: center;
-		// 	position: fixed;
-		// 	height: 100%;
-		// 	right: 0;
-		// 	top: 0;
-		// 	margin: 0;
-		// 	background-color: rgba(0,0,0,.5);
-		// 	z-index: 10000;
-		// 	border: 1px solid $border;
-		// 	ul {
-		// 		li {
-		// 			float: none;
-		// 			margin: 0!important;
-		// 			padding: 0;
-		// 			a {
-		// 				display: block;
-		// 				padding: 5px 15px;
-		// 				color: #fff!important;
-		// 				border-top: 1px solid #fff;
-		// 				background-color: #000;
-		// 			}
-		// 		}
-		// 	}
-		// }
 	}
 	#admin_link a {
 		color: $danger;
 	}
-	// #mean_info a {
-	// 	color: $success;
-	// }
 	.nav_active {
 		color: $textl;
 		border-bottom: 2px solid $textl;
@@ -2421,7 +2368,6 @@ $successd:#2C902C;
 }
 
 .help_video {
-	// display: none;
 	color: #fff;
 	>h2 {
 		font-size: 1.3em;
@@ -2439,7 +2385,6 @@ $successd:#2C902C;
 			font-size: 1.2em;
 			&:before {color: $danger}
 		}
-
 		&:hover {
 			i {
 				&:before {color: $dangerd}

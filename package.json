@@ -1,0 +1,29 @@
+{
+  "name": "appPresent",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "DenisDremkov",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.3.0",
+    "body-parser": "^1.15.0",
+    "connect-flash": "^0.1.1",
+    "connect-mongo": "^1.2.0",
+    "cookie-parser": "^1.4.1",
+    "express": "^4.13.4",
+    "express-session": "^1.13.0",
+    "fs-extra": "^0.30.0",
+    "mkdirp": "^0.5.1",
+    "mongoose": "^4.4.12",
+    "multer": "^1.1.0",
+    "nodemailer": "^2.4.2",
+    "path": "^0.12.7",
+    "sendgrid": "^2.0.0",
+    "serve-favicon": "^2.3.0",
+    "socket.io": "^1.4.6"
+  }
+}

@@ -1,0 +1,95 @@
+<div id="autentif_wrap" class="clearfloat" data-ng-controller="autentificCtrl">		
+	<button id="log_in" data-ng-click = "showLoginForm()" data-ng-show="activItems.private_account">
+		<i class="fa fa-user" aria-hidden="true"></i>
+		<span>Войдите в личный кабинет</span>
+	</button>
+	<div id="avatar_img_wrap" data-ng-show = "rootUser.rights">
+		<img   data-ng-src="{{pathAvatar}}" alt="avatar">
+	</div>			
+	<button id="basket" data-ng-show = "rootUser.rights === 'user'" data-ng-click=toggleUserBasket() data-ng-class = "(showUserBasket)? 'user_basket_active' : ''">Корзина <i class="fa fa-shopping-basket" aria-hidden="true"></i></button>
+	<div data-ng-show = "showUserBasket &amp;&amp; rootUser.basket.length != 0" id="user_product_basket">
+		<table class="table-bordered">
+			<thead>
+				<tr>
+					<td>№</td>
+					<td>бренд</td>
+					<td>модель</td>
+					<td>цена</td>
+					<td></td>
+				</tr>
+			</thead>
+			<tbody>	
+				<tr data-ng-repeat = "product in rootUser.basket">
+					<td>{{$index+1}}</td>
+					<td>{{product.brand}}</td>
+					<td>{{product.model}}</td>
+					<td>{{product.price}}</td>
+					<td>
+						<button title="удалить из корзины" data-ng-click = "deleteProductAutentBasket(product._id)">
+							<i class="fa fa-trash-o" aria-hidden="true" ></i>
+						</button>
+					</td>
+				</tr>
+				<tr class="summ_result">
+					<td colspan = "3">Сумма</td>
+					<td colspan = "2">{{summProductInBasket}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<button id="log_out" data-ng-show = "rootUser.rights" data-ng-click = "logOut()"><i class="fa fa-sign-out" aria-hidden="true"></i></button>
+	<div id="login_main" data-ng-show = "activItems.loginMain">			
+		<ul class="clearfloat">
+			<li data-ng-click = "toggleTabs('loginForm')" data-ng-class="(activItems.tab_login)? 'tab_login_active' : ''">
+				<span>Вход</span>
+			</li>
+			<li data-ng-click = "toggleTabs('registrForm')" data-ng-class="(activItems.tab_registr)? 'tab_login_active' : ''">
+				<span>Регистрация</span>
+			</li>
+		</ul>	
+		<form id="login_form" data-ng-show = "activItems.loginForm">	
+			<input data-ng-model="user.username" class = "form-control" type="text" placeholder="логин" required autocomplete="off"><br>
+			<input data-ng-model="user.password" class = "form-control" type="password" placeholder="пароль" required><br>
+			<button data-ng-click = "login()">
+				<span>войти</span>
+				<i class = "fa fa-spinner fa-spin" data-ng-show = "activItems.log_in_spinner"></i>
+			</button><br>
+			<input type="checkbox" data-ng-model = "user.session" data-ng-disabled = "user.username === 'admin'">
+			<span>запомнить меня</span>
+		</form>
+		<form id="registr_form" name="registrForm" data-ng-show = "activItems.registrForm" novalidate>
+			<div class="row">
+				<div class="col-xs-6">
+					<div id="select_avatar">
+						<div class="img_wrap">
+							<img ngf-thumbnail="avatarImg || 'img/users/avatars/avatar.jpg'">
+							<div ngf-select data-ng-model="avatarImg" name="file" ngf-pattern="'image/*'" ngf-accept="'image/*'" ngf-max-size="1MB" ngf-min-height="0"><i class="fa fa-plus" aria-hidden="true"></i></div>
+						</div>
+						<span>максимум 1 Мб</span>
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<label>	
+						<input type="text" class = "form-control" name="regLogin" data-ng-model="user.username"   required autocomplete="off"/>
+						<span data-ng-show="registrForm.regLogin.$error.required">введите логин</span> 
+					</label><br>
+					<label>
+						<input type="password" class = "form-control" name ="regPassword" data-ng-model="user.password"  required>
+						<span data-ng-show="registrForm.regPassword.$error.required">введите пароль</span> 
+					</label><br>
+					<label>
+						<input type="password" class = "form-control" name ="regPasswordRep" data-ng-model="user.passwordRep"  required>
+						<span data-ng-show="registrForm.regPasswordRep.$error.required">введите пароль повторно</span> 
+					</label><br>						
+					<label>
+						<input type="email" class = "form-control" name="regEmail" data-ng-model="user.email"  placeholder="user@mail.com" required data-ng-pattern="/^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/"><br>					
+						<span data-ng-show="registrForm.regEmail.$error.required">введите e-mail</span>
+						<span data-ng-show="registrForm.regEmail.$error.pattern">формат: user@mail.com</span>  
+					</label><br>
+				</div>	
+			</div>
+			<input type="submit" value="зарегестрироваться" id="btn_registr" data-ng-click = "registr()" data-ng-disabled="registrForm.$invalid"><br>
+		</form>	
+		<button class="btn_close_login" data-ng-click = "closeLoginForm()"><i class="fa fa-times"></i></button>
+	</div>		
+</div>

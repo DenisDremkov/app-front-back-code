@@ -1,0 +1,313 @@
+
+<div id="admin_product"  data-ng-controller = "adminProductsCtrl">
+	<div id="work_buttons_admin_product">
+		<button  class="btn btn-warning"  data-ng-click="clearDbProduct()" title="очистить базу с товарами и комментариями">Очистить базу данных(товары, комментарии, изображения, min max значения, бренды)</button><br>
+		<hr>
+		<p>Вы можете добавить еще: <span>{{balansInDb}}</span> продуктов, но не более 50 шт за один раз. Общее количество товаров ограничено количеством выделенного обьема памяти на heroku</p><br>
+		<input type="text" data-ng-model="numRandomProducts" placeholder="колличество продуктов" title="сколько добавить товаров">
+		<button class="btn btn-success"  data-ng-click="setRandomProductDb()" title="добавить готовую базу товаров и комментариев">Добавить готовые базы данных</button><br>
+	</div>
+	<div class="items_group clearfloat">
+		<span>База данных:</span>
+		<label class="selectDb" data-ng-repeat="(key, value) in DB" data-ng-click = "getDb(key, $event)" data-ng-class = "(currentDb.name === key)? 'selectDb_active' : '' " title="обновить БД">
+			<img data-ng-src="../../img/admin/{{value.img}}" alt="img">
+			<i class="fa fa-retweet" aria-hidden="true"></i>
+			<span>{{value.russ}}</span>
+			<input type="radio"  data-ng-model="currentDb.name" name="name" value="{{key}}"/>
+			<span>({{numProducts[key]}})</span>
+		</label>
+	</div>
+	<ul id="admin_product_menu" class="clearfloat" data-ng-show = "currentDb.name"  >
+		<li data-ng-click = "toggleView('search')" data-ng-class = "(productAction.search)? 'admin_product_menu_active': ''" class = "admin_product_menu_active"><span>Поиск в базе данных</span></li>
+		<li data-ng-click = "toggleView('add')" data-ng-class = "(productAction.add)? 'admin_product_menu_active': ''"><span>Добавить новый товар</span></li>
+		<li data-ng-show = "productAction.edit" data-ng-click = "toggleView('edit')" data-ng-class = "(productAction.edit)? 'admin_product_menu_active': ''"><span>Редактировать запись</span></li>
+	</ul>
+	<div id="admin_product_view" data-ng-show = "currentDb.name">
+		<div id = "admin_product_search" data-ng-class = "(productAction.search)? '' : 'view_hide'">	
+			<div class="input_wrapper clearfloat">
+				<div class="input_item">
+					<button data-ng-click = "findPages()" class="btn btn-primary">Постраничный поиск</button>
+					<i class="fa fa-check" aria-hidden="true" data-ng-show = "typeSearch.pages"></i>
+				</div>
+				<div class="input_item">
+					<button data-ng-click = "findValues()" class="btn btn-primary">Поиск по значениям</button>
+					<i class="fa fa-check" aria-hidden="true" data-ng-show = "typeSearch.values"></i>	
+				</div>
+				<div class="input_item" data-ng-show = "typeSearch.values">
+					<i class="fa fa-search" aria-hidden="true"></i>
+					<input data-ng-model = "searchInputValues.id" type="text" class="form-control" placeholder="ID в базе">
+				</div>
+				<div class="input_item" data-ng-show = "typeSearch.values">
+					<i class="fa fa-search" aria-hidden="true"></i>
+					<input data-ng-model = "searchInputValues.brand"  type="text" class="form-control" placeholder="бренд">
+				</div>
+				<div class="input_item" data-ng-show = "typeSearch.values">
+					<i class="fa fa-search" aria-hidden="true"></i>
+					<input data-ng-model = "searchInputValues.model" type="text" class="form-control" placeholder="модель">
+				</div>
+			</div>
+			<div class="pagination_wrap clearfloat" data-ng-class = "(typeSearch.pages)? '' : 'hide_pagination' ">
+				<div data-pagination data-amountPages="amountPages"></div>	
+			</div>
+			<table class="table table-bordered table-hover">
+				<thead>
+					<tr>
+						<td>№ п/п</td>
+						<td>ID в базе</td>
+						<td>бренд</td>
+						<td>модель</td>
+						<td>удалить</td>
+						<td>редактировать</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr data-ng-repeat = "product in mainView | filter:{_id : search.id} | filter:{brand:search.brand} | filter:{model:search.model}">
+						<td>{{(typeSearch.pages)? $index+numberProduct+1 : $index+1}}</td>
+						<td>{{product._id}}</td>
+						<td>{{product.brand}}</td>
+						<td>{{product.model}}</td>
+						<td><button data-ng-click = "deleteProduct(product._id)"><i class="fa fa-trash-o" aria-hidden="true"></i> удалить</button></td>
+						<td><button data-ng-click = "editProduct(product._id)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> редактировать</button></td>
+					</tr>
+				</tbody>
+			</table>		
+		</div>
+		<div id="admin_product_addNew" data-ng-class = "(!productAction.search)? '' : 'view_hide'">
+			<div class="admin_product_item">
+				<button  data-ng-show = "productAction.add" class="btn btn-success" data-ng-click="addPreparedProduct()" title="заполнить поля нового продукта">Заполнить поля готовыми значениями / Очистить</button><br>
+				<div id="admin_add_options" class="add_prod_item ">
+					<h2>характеристики:</h2>
+					<div class="row">
+						<div class="col-xs-4">
+							<div class="form-group">
+								<label>База данных</label>
+								<input data-ng-hide = "productAction.edit" data-ng-class="(valid.kind.value)? 'valid_val' : 'invalid_val'" type="text" class="form-control" data-ng-model = "product_val.kind" disabled placeholder="выберите бд">
+								<input data-ng-show = "productAction.edit" data-ng-class="(valid.kind.value)? 'valid_val' : 'invalid_val'" type="text" class="form-control" data-ng-model = "product_kind" disabled placeholder="выберите бд">			
+							</div>
+							<div class="form-group">
+								<label>Бренд</label>
+								<input type="text"  data-ng-class="(valid.brand.value)? 'valid_val' : 'invalid_val'" data-ng-model = "product_val.brand" class="form-control" title="цифры и буквы">
+							</div>
+							<div class="form-group">
+								<label>Модель</label>
+								<input type="text"  data-ng-class="(valid.model.value)? 'valid_val' : 'invalid_val'" data-ng-model = "product_val.model" class="form-control" title="цифры и буквы">
+							</div>
+							<div class="form-group">
+								<label>Гарантия, мес.</label>
+								<input type="text"  data-ng-class="(valid.guarantee.value)? 'valid_val' : 'invalid_val'" data-ng-model = "product_val.guarantee"  class="form-control" title="только целые числа">
+							</div>
+							<div class="form-group">
+								<label>Цена, грн.</label>
+								<input type="text"  data-ng-class="(valid.price.value)? 'valid_val' : 'invalid_val'" data-ng-model = "product_val.price" class="form-control" title="только целые числа">
+							</div>
+						</div>
+						<div class="col-xs-4">
+							<div class="form-group">
+								<label>Операционная система</label>
+								<input type="text"  data-ng-class="(valid.operSystem.value)? 'valid_val' : 'invalid_val'" data-ng-model = "product_val.operSystem" class="form-control" title="любые символы">
+							</div>
+							<div class="form-group">
+								<label>Процессор, марка</label>
+								<input type="text"  data-ng-class="(valid.cpu.value)? 'valid_val' : 'invalid_val'" data-ng-model = "product_val.cpu" class="form-control" title="любые символы">
+							</div>
+							<div class="form-group">
+								<label>Количество ядер, шт.</label>
+								<input type="text"  data-ng-class="(valid.numCores.value)? 'valid_val' : 'invalid_val'" data-ng-model = "product_val.numCores"  class="form-control" title="только целые числа">
+							</div>
+							<div class="form-group">
+								<label>Встроенная память, Gb</label>
+								<input type="text"  data-ng-class="(valid.memory.value)? 'valid_val' : 'invalid_val'" data-ng-model = "product_val.memory"  class="form-control" title="только целые числа">
+							</div>
+							<div class="form-group">
+								<label>Оперативная память, Gb</label>
+								<input type="text"  data-ng-class="(valid.ramMemory.value)? 'valid_val' : 'invalid_val'" data-ng-model = "product_val.ramMemory"  class="form-control" title="только целые числа">
+							</div>
+						</div>
+						<div class="col-xs-4">
+							<div class="form-group">
+								<label>Диагональ экрана, дм.</label>
+								<input type="text"  data-ng-class="(valid.screenDiagonal.value)? 'valid_val' : 'invalid_val'" data-ng-model = "product_val.screenDiagonal" class="form-control" title="целые и дробные числа через точку">
+							</div>
+							<div class="form-group">
+								<label>Разрешение экрана, px.</label>
+								<input type="text"  data-ng-class="(valid.screenResolution.value)? 'valid_val' : 'invalid_val'" data-ng-model = "product_val.screenResolution" class="form-control" title="любые символы">
+							</div>
+							<div class="form-group">
+								<label>Фронтальная камера, Мп.</label>
+								<input type="text"  data-ng-class="(valid.frontCamera.value)? 'valid_val' : 'invalid_val'" data-ng-model = "product_val.frontCamera" class="form-control" title="целые и дробные числа через точку">
+							</div>
+							<div class="form-group">
+								<label>Тыловая камера, Мп.</label>
+								<input type="text"  data-ng-class="(valid.mainCamera.value)? 'valid_val' : 'invalid_val'" data-ng-model = "product_val.mainCamera" class="form-control" title="целые и дробные числа через точку">
+							</div>
+							<div class="form-group">
+								<label>Батарея, мА/ч</label>
+								<input type="text"  data-ng-class="(valid.battery.value)? 'valid_val' : 'invalid_val'" data-ng-model = "product_val.battery"  class="form-control" title=" только целые числа">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id = "admin_add_colors" class="add_prod_item clearfloat">
+					<h2>Запишите цвет в формате HEX:</h2>	
+					<input data-ng-model = "product_newColour" data-ng-change = "validationAddColor()" placeholder="#fff" type="text" class="form-control new_color_view">
+					<input  style="background-color: {{product_newColour}}" type="text" class="form-control new_color_view" disabled>
+					<button data-ng-click="addNewColor()" class="btn btn-info" data-ng-disabled = "!valid.btn_addColor">добавить новый цвет</button>
+					<div id="new_colors_wrap" class="clearfloat">
+						<div class="current_new_color" data-ng-repeat = "color in product_val.colours" style="background-color: {{color}}">
+							<button class="delete_color" data-ng-click = "removeColor(color)">
+								<i class="fa fa-trash" aria-hidden="true"></i>
+							</button>
+						</div>
+					</div>
+				</div>
+				<div id = "admin_add_sale" class="add_prod_item clearfloat">
+					<h2>наличие акционных условий</h2>
+					<div class="check_wrap">
+						<label>
+							<i class="fa fa-check" data-ng-class="(product_val.sale.bool)? 'check_sale' : ''"></i>
+							<span class="unselectable">акционный товар</span>
+							<input type="checkbox" data-ng-model="product_val.sale.bool">
+						</label>
+					</div>
+					<input   data-ng-class="(saleValid.discount.value)? 'valid_val' : 'invalid_val'"  data-ng-show="product_val.sale.bool" data-ng-model = "product_val.sale.discount" type="text" class="form-control" placeholder="скидка в %" title="только целые числа">
+					<textarea data-ng-class="(saleValid.descript.value)? 'valid_val' : 'invalid_val'"  data-ng-show="product_val.sale.bool" data-ng-model = "product_val.sale.descript" class="form-control" placeholder="описание" title="любые символы"></textarea>
+				</div>
+			</div>
+			<p data-ng-show = "!productAction.edit">Cохранените запись в базе данных, после этого будет доступно добавление изображений</p>
+			<button data-ng-hide = "productAction.edit" class="btn-primary admin_btn_product" data-ng-click="setProductDb()" data-ng-disabled = "valid_btn.btn_setProductDb">Добавить в базу данных</button>
+			<button data-ng-show = "productAction.edit" class="btn-primary admin_btn_product" data-ng-click="updateProductDb()">Обновить информацию в базе данных (характеристики, цвет и акционные условия)</button>	
+			<div id = "select_images_wrap" class="add_prod_item" data-ng-show = "product_id">	
+				<h2>изображения:</h2>
+				<div class="row">
+					<div class="col-xs-4">
+						<h4>Основные</h4>
+						<div class="image_item_wrap">
+							<div class="row ">
+								<div class="col-xs-6">
+									<div class="img_item" data-ng-class="(product_img.small.file || productAction.edit)? '':'img_empty'">
+										<div class="img_wrap">
+											<h3 data-ng-class = "(productAction.edit)? 'bottom_position' : ''" data-ng-hide = "product_img.small.file">маленькое<br>до 500 Кб</h3>
+											<img data-ngf-thumbnail="product_img.small.file" alt="small">
+											<img data-ng-show = "productAction.edit &amp;&amp; !product_img.small.file" data-ng-src = "../../img/products/small/{{product_val.kind}}/{{product_val.img.small}}" alt="small">
+											<div class="btn_add_imgSlide" data-ngf-select data-ng-model="product_img.small.file" data-ngf-pattern="'image/*'" data-ngf-accept="'image/*'" data-ngf-min-height="0" data-ngf-max-size="0.5MB">
+												<i data-ng-show = "!productAction.edit" class="fa fa-plus" aria-hidden="true"></i>
+												<span data-ng-show = "productAction.edit" data-ng-class = "(product_img.small.file)? 'new_img_edit_product' : ''">заменить</span>			
+											</div>
+											<i data-ng-class = "(product_img.small.loaded)? 'load_img_active' : ''" class="fa fa-check" aria-hidden="true"></i>
+											<i data-ng-class = "(product_img.small.load_img_begin)? 'load_img_active' : ''" class="fa fa-refresh fa-spin" aria-hidden="true"></i>
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-6">
+									<div class="img_item" data-ng-class="(product_img.big.file || productAction.edit)? '':'img_empty'">
+										<div class="img_wrap">
+											<h3 data-ng-class = "(productAction.edit)? 'bottom_position' : ''" data-ng-hide = "product_img.big.file">большое<br>до 3 Mб</h3>
+											<img data-ngf-thumbnail="product_img.big.file" alt="big">
+											<img data-ng-show = "productAction.edit &amp;&amp; !product_img.big.file" data-ng-src = "../../img/products/big/{{product_val.kind}}/{{product_val.img.big}}" alt="big">
+											<div class="btn_add_imgSlide" data-ngf-select data-ng-model="product_img.big.file" data-ngf-pattern="'image/*'" data-ngf-accept="'image/*'" data-ngf-min-height="0" data-ngf-max-size="3MB">
+												<i data-ng-show = "!productAction.edit" class="fa fa-plus" aria-hidden="true"></i>
+												<span data-ng-show = "productAction.edit" data-ng-class = "(product_img.big.file)? 'new_img_edit_product' : ''">заменить</span>
+											</div>
+											<i data-ng-class = "(product_img.big.loaded)? 'load_img_active' : ''" class="fa fa-check" aria-hidden="true"></i>
+											<i data-ng-class = "(product_img.big.load_img_begin)? 'load_img_active' : ''" class="fa fa-refresh fa-spin" aria-hidden="true"></i>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>	
+					</div>
+					<div class="col-xs-8">
+						<h4>Слайдер</h4>
+						<div class="image_item_wrap">
+							<div class="row">
+								<div class="col-xs-3">
+									<div class="img_wrap" data-ng-class="(product_img.slide1.file || productAction.edit)? '':'img_empty'">
+										<h3 data-ng-class = "(productAction.edit)? 'bottom_position' : ''" data-ng-hide = "product_img.slide1.file">слайд 1<br>до 1 Mб</h3>
+										<img data-ngf-thumbnail="product_img.slide1.file" alt="slide1">
+										<img data-ng-show = "productAction.edit &amp;&amp; !product_img.slide1.file" data-ng-src = "../../img/products/slide1/{{product_val.kind}}/{{product_val.img.slide1}}" alt="slide1">
+										<div class="btn_add_imgSlide" data-ngf-select data-ng-model="product_img.slide1.file" data-ngf-pattern="'image/*'" data-ngf-accept="'image/*'" data-ngf-min-height="0" data-ngf-max-size="1MB">
+											<i data-ng-show = "!productAction.edit" class="fa fa-plus" aria-hidden="true"></i>	
+											<span data-ng-show = "productAction.edit" data-ng-class = "(product_img.slide1.file)? 'new_img_edit_product' : ''">заменить</span>								
+										</div>
+										<i data-ng-class = "(product_img.slide1.loaded)? 'load_img_active' : ''" class="fa fa-check" aria-hidden="true"></i>
+										<i data-ng-class = "(product_img.slide1.load_img_begin)? 'load_img_active' : ''" class="fa fa-refresh fa-spin" aria-hidden="true"></i>
+									</div>
+								</div>
+								<div class="col-xs-3">
+									<div class="img_wrap" data-ng-class="(product_img.slide2.file || productAction.edit)? '':'img_empty'">
+										<h3 data-ng-class = "(productAction.edit)? 'bottom_position' : ''" data-ng-hide = "product_img.slide2.file">слайд 2<br>до 1 Mб</h3>
+										<img data-ngf-thumbnail="product_img.slide2.file" alt="slide2">
+										<img data-ng-show = "productAction.edit &amp;&amp; !product_img.slide2.file" data-ng-src = "../../img/products/slide2/{{product_val.kind}}/{{product_val.img.slide2}}" alt="slide2">
+										<div class="btn_add_imgSlide" data-ngf-select data-ng-model="product_img.slide2.file" data-ngf-pattern="'image/*'" data-ngf-accept="'image/*'" data-ngf-min-height="0" data-ngf-max-size="1MB">
+											<i data-ng-show = "!productAction.edit" class="fa fa-plus" aria-hidden="true"></i>	
+											<span data-ng-show = "productAction.edit" data-ng-class = "(product_img.slide2.file)? 'new_img_edit_product' : ''">заменить</span>								
+										</div>
+										<i data-ng-class = "(product_img.slide2.loaded)? 'load_img_active' : ''"  class="fa fa-check" aria-hidden="true"></i>
+										<i data-ng-class = "(product_img.slide2.load_img_begin)? 'load_img_active' : ''" class="fa fa-refresh fa-spin" aria-hidden="true"></i>
+									</div>
+								</div>
+								<div class="col-xs-3">
+									<div class="img_wrap" data-ng-class="(product_img.slide3.file || productAction.edit)? '':'img_empty'">
+										<h3 data-ng-class = "(productAction.edit)? 'bottom_position' : ''" data-ng-hide = "product_img.slide3.file">слайд 3<br>до 1 Mб</h3>
+										<img data-ngf-thumbnail="product_img.slide3.file" alt="slide3">
+										<img data-ng-show = "productAction.edit &amp;&amp; !product_img.slide3.file" data-ng-src = "../../img/products/slide3/{{product_val.kind}}/{{product_val.img.slide3}}" alt="slide3">
+										<div class="btn_add_imgSlide" data-ngf-select data-ng-model="product_img.slide3.file" data-ngf-pattern="'image/*'" data-ngf-accept="'image/*'" data-ngf-min-height="0" data-ngf-max-size="1MB">
+											<i data-ng-show = "!productAction.edit" class="fa fa-plus" aria-hidden="true"></i>
+											<span data-ng-show = "productAction.edit" data-ng-class = "(product_img.slide3.file)? 'new_img_edit_product' : ''">заменить</span>								
+										</div>
+										<i data-ng-class = "(product_img.slide3.loaded)? 'load_img_active' : ''" class="fa fa-check" aria-hidden="true"></i>
+										<i data-ng-class = "(product_img.slide3.load_img_begin)? 'load_img_active' : ''" class="fa fa-refresh fa-spin" aria-hidden="true"></i>
+									</div>
+								</div>
+								<div class="col-xs-3">
+									<div class="img_wrap" data-ng-class="(product_img.slide4.file || productAction.edit)? '':'img_empty'">
+										<h3 data-ng-class = "(productAction.edit)? 'bottom_position' : ''" data-ng-hide = "product_img.slide4.file">слайд 4<br>до 1 Mб</h3>
+										<img data-ngf-thumbnail="product_img.slide4.file" alt="slide4">
+										<img data-ng-show = "productAction.edit &amp;&amp; !product_img.slide4.file" data-ng-src = "../../img/products/slide4/{{product_val.kind}}/{{product_val.img.slide4}}" alt="slide4">
+										<div class="btn_add_imgSlide" data-ngf-select data-ng-model="product_img.slide4.file" data-ngf-pattern="'image/*'" data-ngf-accept="'image/*'" data-ngf-min-height="0" data-ngf-max-size="1MB">
+											<i data-ng-show = "!productAction.edit" class="fa fa-plus" aria-hidden="true">
+											</i><span data-ng-show = "productAction.edit" data-ng-class = "(product_img.slide4.file)? 'new_img_edit_product' : ''">заменить</span>
+										</div>
+										<i data-ng-class = "(product_img.slide4.loaded)? 'load_img_active' : ''" class="fa fa-check" aria-hidden="true"></i>
+										<i data-ng-class = "(product_img.slide4.load_img_begin)? 'load_img_active' : ''" class="fa fa-refresh fa-spin" aria-hidden="true"></i>
+									</div>
+								</div>
+							</div>
+						</div>		
+					</div>
+				</div>
+				<button  data-ng-show = "!productAction.edit" data-ng-click = "setImgDb('add')" class="btn-primary btn_add" >Добавить изображения в базу данных</button>
+				<p id="message_update_img" data-ng-show = "productAction.edit">обновленные изображения будут доступны только после перезагрузки сайта(имена фото не меняются, поэтому браузер не подгружает измененные изображения. Чтобы увидеть изменения нужно выйти и залогинится снова)</p>
+				<button  data-ng-show = "productAction.edit" data-ng-click = "setImgDb('edit')" class="btn-primary btn_add" >обновить изображения в базе данных</button>	
+			</div>
+			<div data-ng-hide = "productAction.add" id = "admin_edit_product_comments" class="add_prod_item clearfloat">
+				<h2>Комментарии</h2>
+				<button data-ng-click = getCurrentProductComments($event) class="btn btn-primary">{{btnCommentsName}}</button>
+				<div class="table_wrap" data-ng-show = "toggleComments">
+					<table class="table table-bordered table-hover">
+						<thead>
+							<tr>
+								<td>Дата</td>
+								<td>Пользователь</td>
+								<td>Комментарий</td>
+								<td>Удалить</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="user_comments" data-ng-repeat = "comment in editCurrProductComments | orderBy : '-dateMilisec'">
+								<td>{{comment.prettyDate}}</td>
+								<td>{{comment.user}}</td>
+								<td>{{comment.text}}</td>	
+								<td>
+									<button data-ng-click = "editCurrProductDeleteComment(comment._id)" title="удалить комментарии из бд"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+								</td>						
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+

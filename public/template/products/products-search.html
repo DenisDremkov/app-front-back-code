@@ -1,0 +1,49 @@
+<div id="search_wrapper" data-ng-controller = "productsSearchCtrl">
+	<div class="row">
+		<div class="col-xs-12 col-sm-4">
+			<div class="check_wrap search_item">
+				<span>Поиск по бренду</span>
+				<label class="checkbox_custom" data-ng-repeat = "(key, value) in data.brendsThisProducts" data-ng-click = "toggleCheckBox(key)" >
+					<i class="fa fa-check" data-ng-class = "(data.brendsThisProducts[key])? '' : 'check_hide'"></i>
+					<span class="unselectable">{{key}}</span>
+				</label><br>
+				<label id="toggleAllBrands" class="checkbox_custom" data-ng-click = "toggleAllBrends()" >
+					<i class="fa fa-check" data-ng-class = "(!showAllBrends)? '' : 'check_hide'"></i>
+					<span class="unselectable">выбрать все бренды</span>
+				</label><br>
+			</div>
+			<div class="search_wrap search_item">
+				<span>Поиск по модели</span>
+				<input type="text" data-ng-model = "data.search.searchModel" data-ng-keyup = "testEmptyBrends()" placeholder="модель">
+			</div>
+			<div class="search_item">
+				<span>Акция</span>
+				<label class="checkbox_custom" data-ng-click="toggleSale()">
+					<i class="fa fa-check" data-ng-class = "(data.productsWithSale)? '' : 'check_hide'"></i>
+					<span class="unselectable">только акционные товары</span>
+				</label>
+			</div>
+		</div>
+		<div class="col-xs-12 col-sm-8">
+			<div class="slider_wrap search_item row">
+				<span>Поиск по характеристикам</span>
+				<div class="col-xs-12 col-sm-6 " data-ng-repeat="slider in data.slidersView">
+					<div class="slider_item">
+						<span>{{slider.rusName}}</span>
+						<div><rzslider data-rz-slider-model="slider.min" data-rz-slider-high="slider.max"	rz-slider-options="slider.options"></rzslider></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div data-ng-show = "view_mainList" id="filters_wrap" class="clearfloat">
+		<span>Сортировать список</span>
+		<button id="orderBySearchRaiting" class="orderBy_active" data-ng-click="orderBy('raiting')">Рейтинг
+			<i class="fa fa-sort-desc" aria-hidden="true"></i>
+		</button>
+		<button id="orderBySearchPrice" data-ng-click="orderBy('price')">Цена
+			<i class="fa fa-sort-desc" aria-hidden="true"></i>
+		</button>
+	</div>
+</div>
+

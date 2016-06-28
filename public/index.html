@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ru" data-ng-app = "appStore">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="libs/jquery/jquery-ui.min.css">
+	<link rel="stylesheet" href="libs/bootstrap/bootstrap.min.css">
+	<link rel="stylesheet" href="libs/awesome/font-awesome.min.css">
+	<link rel="stylesheet" href="libs/awesome/fonts.css">
+	<link rel="stylesheet" href="libs/carousel/angular-carousel.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.1/animate.min.css">
+	<link rel="stylesheet" href="libs/rzslider/rzslider.min.css">
+	<link rel="stylesheet" href="css/screen.css">
+	<title>app</title>
+</head>
+<body data-ng-controller="mainCtrl" data-ng-cloak>
+	<header>
+		<div id="main_bg_spinner">
+			<div class="socket_message"></div>
+			<i class="fa fa-cog fa-spin" aria-hidden="true"></i>
+		</div>
+		<div class="header_wrap container">
+			<div id="logo">
+				<a href="#">LOGO</a>
+			</div>
+			<nav>
+				<ul>
+					<li><a data-ui-sref="products" data-ui-sref-active ="nav_active" class="nav_active">Товары</a></li>
+					<li><a data-ui-sref="aboutUs" data-ui-sref-active ="nav_active">О нас</a></li>
+					<li><a data-ui-sref="contacts" data-ui-sref-active ="nav_active">Контакты</a></li>
+					<li ng-show="rootUser.rights==='admin'" id="admin_link"><a data-ui-sref="admin" data-ui-sref-active ="nav_active">администратор</a></li>
+					<li id="mean_info"><a data-ui-sref="proektInfo" data-ui-sref-active ="nav_active">mean-stack(info)</a></li>	
+				</ul>
+			</nav>
+			<div data-ng-include="'template/autentific.html'"></div>		
+		</div>		
+	</header>
+	<div id = "#main" class="container" >
+		<div data-ui-view></div>
+		<div id="bg_spinner" data-ng-show="mainSpinner">
+			<div class="socket_message"></div>
+			<i class="fa fa-refresh fa-spin" aria-hidden="true"></i>
+		</div>
+		<div data-web-assistant class="web-assistant"></div>
+		<button id="btn_descriptionController" data-ng-click="showDescrCtrl()"><span>"{{ctrlDescrName}}"<br>помощь</span></button>		
+		<div class="ctrl_descr" data-ng-show = "ctrlDescr" >
+			<button data-ng-click = hideDescrCtrl()><i class="fa fa-times" aria-hidden="true"></i></button>
+			<div data-ng-include="ctrlDescrTemplate"></div>
+		</div>
+	</div>	
+
+	<!-- sokcet.io -->
+	<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+	<!-- jquery -->
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<!-- AngularJS v1.5.3  -->
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.3/angular.min.js"></script>
+	<script type="text/javascript" src="libs/angular/socket.min.js"></script>
+	<!-- ui-router -->
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.0/angular-ui-router.min.js"></script>
+	<!-- carousel -->
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.3/angular-touch.min.js"></script>
+	<script type="text/javascript" src="libs/carousel/angular-carousel.min.js"></script>
+	<!-- cookie -->
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.3/angular-cookies.min.js"></script>
+	<!-- upload files -->
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/12.0.4/ng-file-upload-shim.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/12.0.4/ng-file-upload.min.js"></script>
+	<!-- animation -->
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.3/angular-animate.min.js"></script>
+	<script type="text/javascript" src="libs/angular/angular-animate.min.js"></script>
+	<!-- sliders -->
+	<script type="text/javascript" src="libs/rzslider/rzslider.min.js"></script>
+	<!-- app -->
+	<script type="text/javascript" src="js/app.js"></script>
+	<!-- controllers -->
+	<script type="text/javascript" src="js/controllers/MAIN-ctrl.js"></script>
+	<script type="text/javascript" src="js/controllers/autentific-ctrl.js"></script>
+	<script type="text/javascript" src="js/controllers/user/main-ctrl.js"></script>
+	<script type="text/javascript" src="js/controllers/user/search-ctrl.js"></script>
+	<script type="text/javascript" src="js/controllers/user/info-ctrl.js"></script>
+	<script type="text/javascript" src="js/controllers/user/compare-ctrl.js"></script>
+	<script type="text/javascript" src="js/controllers/admin/main-ctrl.js"></script>
+	<script type="text/javascript" src="js/controllers/admin/products-ctrl.js"></script>
+	<script type="text/javascript" src="js/controllers/admin/users-ctrl.js"></script>
+	<script type="text/javascript" src="js/controllers/admin/analitika-ctrl.js"></script>
+	<!-- services -->
+	<script type="text/javascript" src="js/services/socket-Factory.js"></script>
+	<script type="text/javascript" src="js/services/autentific-Factory.js"></script>
+	<script type="text/javascript" src="js/services/user/main-Factory.js"></script>
+	<script type="text/javascript" src="js/services/user/search-Factory.js"></script>
+	<script type="text/javascript" src="js/services/user/info-Factory.js"></script>
+	<script type="text/javascript" src="js/services/user/compare-Factory.js"></script>
+	<script type="text/javascript" src="js/services/admin/products-Factory.js"></script>
+	<script type="text/javascript" src="js/services/admin/users-Factory.js"></script>
+	<script type="text/javascript" src="js/services/admin/analitika-Factory.js"></script>
+	<!-- directive -->
+	<script type="text/javascript" src="js/directives/pagination.js"></script>
+	<script type="text/javascript" src="js/directives/reiting.js"></script>
+	<script type="text/javascript" src="js/directives/popup.js"></script>
+	<script type="text/javascript" src="js/directives/web-assistant.js"></script>
+	<script type="text/javascript" src="js/directives/admin-verification.js"></script>
+	<!-- url -->
+	<script type="text/javascript" src="js/mainUrl.js"></script>
+
+</body>
+</html>
+
+
+

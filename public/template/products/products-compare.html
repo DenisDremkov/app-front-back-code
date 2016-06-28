@@ -1,0 +1,131 @@
+<div id = "compare_wrapper" data-ng-controller = "productsCompareCtrl">
+	<table class="table table-hover" >
+		<tbody>
+			<tr>
+				<td></td>
+				<td data-ng-repeat = "product in arrCompareProducts | orderBy : sortItem : reverse" class="img_wrap">
+					<img data-ng-src="/img/products/small/{{product.kind}}/{{product.img.small}}" alt="{{product.brand}} {{product.model}}">
+				</td>
+			</tr>
+			<tr class="brand">
+				<td>Бренд</td>
+				<td data-ng-repeat = "product in arrCompareProducts | orderBy : sortItem : reverse">{{product.brand}}</td>
+			</tr>
+			<tr class= "model">
+				<td>Модель</td>
+				<td data-ng-repeat = "product in arrCompareProducts | orderBy : sortItem : reverse">{{product.model}}</td>
+			</tr>
+			<tr>
+				<td>Операционная система</td>
+				<td data-ng-repeat = "product in arrCompareProducts | orderBy : sortItem : reverse">{{product.operSystem}}</td>
+			</tr>
+			<tr>
+				<td>Процессор, марка</td>
+				<td data-ng-repeat = "product in arrCompareProducts | orderBy : sortItem : reverse">{{product.cpu}}</td>
+			</tr>
+			<tr>
+				<td class="btnSort_wrap">
+					Количество ядер, шт.
+					<button data-ng-click = "sortDown('numCores')"><i class="fa fa-sort-numeric-desc" aria-hidden="true" title = "сортировать"></i></button>
+					<button data-ng-click = "sortUp('numCores')"><i class="fa fa-sort-numeric-asc" aria-hidden="true" title = "сортировать"></i></button>
+				</td>
+				<td data-ng-repeat = "product in arrCompareProducts | orderBy : sortItem : reverse" data-ng-class = "setClassMinMaxValues('numCores', product.numCores)">{{product.numCores}}</td>
+			</tr>
+			<tr>
+				<td class="btnSort_wrap">
+					Встроенная память, Gb
+					<button data-ng-click = "sortDown('memory')"><i class="fa fa-sort-numeric-desc" aria-hidden="true" title = "сортировать"></i></button>
+					<button data-ng-click = "sortUp('memory')"><i class="fa fa-sort-numeric-asc" aria-hidden="true" title = "сортировать"></i></button>
+				</td>
+				<td data-ng-repeat = "product in arrCompareProducts | orderBy : sortItem : reverse" data-ng-class = "setClassMinMaxValues('memory', product.memory)">{{product.memory}}</td>
+			</tr>
+			<tr>
+				<td class="btnSort_wrap">
+					Оперативная память, Gb
+					<button data-ng-click = "sortDown('ramMemory')"><i class="fa fa-sort-numeric-desc" aria-hidden="true" title = "сортировать"></i></button>
+					<button data-ng-click = "sortUp('ramMemory')"><i class="fa fa-sort-numeric-asc" aria-hidden="true" title = "сортировать"></i></button>
+				</td>
+				<td data-ng-repeat = "product in arrCompareProducts | orderBy : sortItem : reverse" data-ng-class = "setClassMinMaxValues('ramMemory', product.ramMemory)">{{product.ramMemory}}</td>
+			</tr>
+			<tr>
+				<td class="btnSort_wrap">
+					Диагональ экрана, дм.
+					<button data-ng-click = "sortDown('screenDiagonal')"><i class="fa fa-sort-numeric-desc" aria-hidden="true" title = "сортировать"></i></button>
+					<button data-ng-click = "sortUp('screenDiagonal')"><i class="fa fa-sort-numeric-asc" aria-hidden="true" title = "сортировать"></i></button>
+				</td>
+				<td data-ng-repeat = "product in arrCompareProducts | orderBy : sortItem : reverse" data-ng-class = "setClassMinMaxValues('screenDiagonal', product.screenDiagonal)">{{product.screenDiagonal}}</td>
+			</tr>
+			<tr>
+				<td>Разрешение экрана, px.</td>
+				<td data-ng-repeat = "product in arrCompareProducts | orderBy : sortItem : reverse">{{product.screenResolution}}</td>
+			</tr>
+			<tr>
+				<td class="btnSort_wrap">
+					Фронтальная камера, Мп.
+					<button data-ng-click = "sortDown('frontCamera')"><i class="fa fa-sort-numeric-desc" aria-hidden="true" title = "сортировать"></i></button>
+					<button data-ng-click = "sortUp('frontCamera')"><i class="fa fa-sort-numeric-asc" aria-hidden="true" title = "сортировать"></i></button>
+				</td>
+				<td data-ng-repeat = "product in arrCompareProducts | orderBy : sortItem : reverse" data-ng-class = "setClassMinMaxValues('frontCamera', product.frontCamera)">{{product.frontCamera}}</td>
+			</tr>
+			<tr>
+				<td class="btnSort_wrap">
+					Тыловая камера, Мп.
+					<button data-ng-click = "sortDown('mainCamera')"><i class="fa fa-sort-numeric-desc" aria-hidden="true" title = "сортировать"></i></button>
+					<button data-ng-click = "sortUp('mainCamera')"><i class="fa fa-sort-numeric-asc" aria-hidden="true" title = "сортировать"></i></button>
+				</td>
+				<td data-ng-repeat = "product in arrCompareProducts | orderBy : sortItem : reverse"  data-ng-class = "setClassMinMaxValues('mainCamera', product.mainCamera)">{{product.mainCamera}}</td>
+			</tr>
+			<tr>
+				<td class="btnSort_wrap">
+					Батарея, мА/ч
+					<button data-ng-click = "sortDown('battery')"><i class="fa fa-sort-numeric-desc" aria-hidden="true" title = "сортировать"></i></button>
+					<button data-ng-click = "sortUp('battery')"><i class="fa fa-sort-numeric-asc" aria-hidden="true" title = "сортировать"></i></button>
+				</td>
+				<td data-ng-repeat = "product in arrCompareProducts | orderBy : sortItem : reverse" data-ng-class = "setClassMinMaxValues('battery',product.battery)">{{product.battery}}</td>
+			</tr>
+			<tr>
+				<td class="btnSort_wrap">
+					Гарантия, мес.
+					<button data-ng-click = "sortDown('guarantee')"><i class="fa fa-sort-numeric-desc" aria-hidden="true" title = "сортировать"></i></button>
+					<button data-ng-click = "sortUp('guarantee')"><i class="fa fa-sort-numeric-asc" aria-hidden="true" title = "сортировать"></i></button>
+				</td>
+				<td data-ng-repeat = "product in arrCompareProducts | orderBy : sortItem : reverse" data-ng-class = "setClassMinMaxValues('guarantee', product.guarantee)">{{product.guarantee}}</td>
+			</tr>
+			<tr>
+				<td class="btnSort_wrap">
+					Цена, грн.
+					<button data-ng-click = "sortDown('price')"><i class="fa fa-sort-numeric-desc" aria-hidden="true" title = "сортировать"></i></button>
+					<button data-ng-click = "sortUp('price')"><i class="fa fa-sort-numeric-asc" aria-hidden="true" title = "сортировать"></i></button>
+				</td>
+				<td data-ng-repeat = "product in arrCompareProducts | orderBy : sortItem : reverse" data-ng-class = "setClassMinMaxValues('price', product.price)">{{product.price}}</td>
+			</tr>
+			<tr>
+				<td class="btnSort_wrap">
+					Рейтинг
+					<button data-ng-click = "sortDown()"><i class="fa fa-sort-numeric-desc" aria-hidden="true" title = "сортировать"></i></button>
+					<button data-ng-click = "sortUp()"><i class="fa fa-sort-numeric-asc" aria-hidden="true" title = "сортировать"></i></button>
+				</td>
+				<td data-ng-repeat = "product in arrCompareProducts | orderBy : sortItem : reverse" data-ng-class = "setClassMinMaxValues('raiting', product.raiting.val)">{{product.raiting.val}}</td>
+			</tr>
+			<tr>
+				<td>Наличие акции</td>
+				<td data-ng-repeat = "product in arrCompareProducts | orderBy : sortItem : reverse">
+					<i class="fa fa-check" aria-hidden="true" data-ng-show = "product.sale.bool"></i>
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td data-ng-repeat = "product in arrCompareProducts | orderBy : sortItem : reverse">
+					<button class="btn_compare_bottom" data-ng-click = "deleteCompare(product._id)" title="убрать из списка"><i class="fa fa-trash" aria-hidden="true"></i></button>
+					
+					<button class="btn_compare_bottom"  data-ng-click = 'toggleProductBasket(product)' title="добавить в корзину">
+						<i  data-ng-class="(data.checkedButtonsBasket[product._id])? 'checked_btn_basket_compare' : '' " class="fa fa-shopping-basket" aria-hidden="true"></i>
+					</button>
+					<button class="btn_compare_bottom" data-ng-click = "showInfo(product)" title="подробная информация"><i class="fa fa-info" aria-hidden="true"></i></button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+

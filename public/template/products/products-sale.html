@@ -1,0 +1,22 @@
+
+<div id="goods_sale">
+	<ul id="main_sale_carousel" data-ng-if="data.carouselShow"  rn-carousel class="image" rn-carousel-easing = "easeInOutQuad"  rn-carousel-duration = "2000" rn-carousel-controls rn-carousel-auto-slide = "6" rn-carousel-controls-allow-loop rn-carousel-transition="fadeAndSlide">
+		<li data-ng-repeat="product in data.carouselView">
+			<div class="layer row">
+				<div class="col-xs-5">
+					<div class="img_wrap">
+						<img data-ng-src="./img/products/slide1/{{product.kind}}/{{product.img.slide1}}" alt="product">
+					</div>
+				</div>
+				<div class="col-xs-7">
+					<div class="descript_sale">
+						<h2>{{product.brand}}  {{product.model}}</h2>
+						<h3>Скидка <span>{{product.sale.discount}}</span> %</h3>
+						<p><span>Акционное предложение</span> {{product.sale.descript}}</p>
+						<button data-ng-click = "showInfo(product)">подробнее</button>
+					</div>
+				</div>
+			</div>
+		</li>
+	</ul>
+</div>

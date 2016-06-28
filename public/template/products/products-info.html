@@ -1,0 +1,128 @@
+<div id="product_info_wrap" data-ng-controller = "productsInfoCtrl">
+	<h2>{{currentProduct.brand}}  {{currentProduct.model}}</h2>	
+	<div class="row">
+		<div class="col-xs-5">
+			<ul id="info_carousel" data-ng-if="currProductImgCarousel"  rn-carousel  rn-carousel-easing = "easeInOutQuad" rn-carousel-transition = "hexagon"  rn-carousel-duration = "1000" rn-carousel-controls rn-carousel-auto-slide = "4" rn-carousel-controls-allow-loop>
+				<li data-ng-repeat="image in currProductImgCarousel">
+					<div class="layer">
+						<div class="img_wrap">
+							<img data-ng-src="./img/products/{{image.name}}/{{currentProduct.kind}}/{{image.fileName}}" alt="{{currentProduct.model}}">
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div class="col-xs-7">
+			<ul class="info_bar clearfloat">
+				<li><a data-ng-show = "currentProduct.sale.bool" href="#" data-ng-click = "toggleInfoView('sale', $event)" data-ng-class = "(activeView.show === 'sale')? 'info_active' : ''">Акция</a></li>
+				<li><a href="#" data-ng-click = "toggleInfoView('options', $event)" data-ng-class = "(activeView.show === 'options')? 'info_active' : ''">Характеристики</a></li>
+				<li><a href="#" data-ng-click = "toggleInfoView('accessories', $event)" data-ng-class = "(activeView.show === 'accessories')? 'info_active' : ''">Аксессуары</a></li>
+				<li><a href="#" data-ng-click = "toggleInfoView('services', $event)" data-ng-class = "(activeView.show === 'services')? 'info_active' : ''">Сервисы</a></li>
+				<li><a href="#" data-ng-click = "toggleInfoView('delivery', $event)" data-ng-class = "(activeView.show === 'delivery')? 'info_active' : ''">Доставка</a></li>
+			</ul>
+			<div id="info_view">				
+				<div id="info_sale_wrap" data-ng-show = "currentProduct.sale.bool"  data-ng-class = "(activeView.show === 'sale')? '' : 'view_hide'">
+					<p><span>Скидка:</span> {{currentProduct.sale.discount}}%</p>
+					<p><span>Описание:</span> {{currentProduct.sale.descript}}</p>
+				</div>
+				<div id="info_property_wrap" data-ng-class = "(activeView.show === 'options')? '' : 'view_hide'">
+					<table>
+						<tbody>
+							<tr>
+								<td>Операц. система</td>
+								<td>{{currentProduct.operSystem}}</td>
+							</tr>
+							<tr>
+								<td>Процессор</td>
+								<td>{{currentProduct.cpu}}</td>
+							</tr>
+							<tr>
+								<td>Колич-во ядер, шт.</td>
+								<td>{{currentProduct.numCores}}</td>
+							</tr>
+							<tr>
+								<td>Память(встроенная), Gb.</td>
+								<td>{{currentProduct.memory}}</td>
+							</tr>
+							<tr>
+								<td>Память оперативная, Mb.</td>
+								<td>{{currentProduct.ramMemory}}</td>
+							</tr>
+							<tr>
+								<td>Экран(размер), px.</td>
+								<td>{{currentProduct.screenDiagonal}}</td>
+							</tr>
+							<tr>
+								<td>Экран(разрешение)</td>
+								<td>{{currentProduct.screenResolution}} px</td>
+							</tr>
+							
+							<tr>
+								<td>Фронт-камера, Mpx.</td>
+								<td>{{currentProduct.frontCamera}}</td>
+							</tr>
+							<tr>
+								<td>Тыловая камера, Mpx.</td>
+								<td>{{currentProduct.mainCamera}}</td>
+							</tr>
+							<tr>
+								<td>Батарея, mA/ч.</td>
+								<td>{{currentProduct.battery}} </td>
+							</tr>
+							<tr>
+								<td>Доступные цвета</td>
+								<td id = "colours_wrap"><div data-ng-repeat = " colour in currentProduct.colours" style="background-color:{{colour}}"></div></td>
+							</tr>
+							<tr>
+								<td>Гарантия, мес.</td>
+								<td>{{currentProduct.guarantee}}</td>
+							</tr>
+							<tr>
+								<td>Цена, грн.</td>
+								<td>{{currentProduct.price}}</td>
+							</tr>
+							<tr>
+								<td>Рейтинг</td>
+								<td>
+									<div class="star_reiting_wrap clearfloat">
+										<div data-star-reiting data-set-reiting = "{{currentProduct.raiting.val}}" data-id-product = "{{currentProduct._id}}" data-kind-product = "{{currentProduct.kind}}" ></div>
+									</div>
+								</td>
+							</tr>
+						</tbody>		
+					</table>
+				</div>
+				<div data-ng-class = "(activeView.show === 'accessories')? '' : 'view_hide'">
+					<h3>АКСЕССУАРЫ</h3>
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatum laborum natus, veniam nemo nostrum doloremque velit quas commodi. Aliquid fugiat officia cumque, a dolor consectetur eligendi eveniet ab asperiores laborum inventore commodi expedita velit porro, illum ipsum. Amet, est nisi veritatis minima, esse beatae explicabo quod, ipsam repudiandae natus reprehenderit facere ratione. Quia incidunt fugiat aliquid doloribus, pariatur vel obcaecati autem ipsum consectetur nam facilis libero nobis similique placeat officia deleniti impedit, inventore, aut animi modi totam ratione dignissimos perspiciatis repudiandae. Ex iure asperiores, aliquid iste vitae culpa debitis vel atque iusto aspernatur, doloremque dolore officiis dolorem modi ullam temporibus?</p>
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatum laborum natus, veniam nemo nostrum doloremque velit quas commodi. Aliquid fugiat officia cumque, a dolor consectetur eligendi eveniet ab asperiores laborum inventore commodi expedita velit porro, illum ipsum. Amet, est nisi veritatis minima, esse beatae explicabo quod, ipsam repudiandae natus reprehenderit facere ratione. Quia incidunt fugiat aliquid doloribus, pariatur vel obcaecati autem ipsum consectetur nam facilis libero nobis similique placeat officia deleniti impedit, inventore, aut animi modi totam ratione dignissimos perspiciatis repudiandae. Ex iure asperiores, aliquid iste vitae culpa debitis vel atque iusto aspernatur, doloremque dolore officiis dolorem modi ullam temporibus?</p>
+				</div>
+				<div data-ng-class = "(activeView.show === 'services')? '' : 'view_hide'">
+					<h3>СЕРВИСЫ</h3>
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eligendi autem eos, in, dolor sequi cupiditate, fuga veniam ad qui quam adipisci repellendus perspiciatis cum, consequuntur eum enim necessitatibus impedit omnis rerum error assumenda. Magni asperiores repellat fugit inventore, vitae amet, magnam praesentium saepe optio ducimus sapiente minus. Laboriosam dolores ipsum reprehenderit placeat et minus soluta eos voluptate, nobis, labore repellendus aut! Impedit consequuntur atque exercitationem laborum molestias error voluptatem. Voluptatum voluptatibus numquam ipsam, consequatur pariatur, aliquid exercitationem nobis iste sed asperiores voluptates accusamus. Nesciunt accusantium eos vero, nisi consequuntur tenetur beatae, illo maxime iusto corrupti ad et, ipsum maiores dignissimos?</p>
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatum laborum natus, veniam nemo nostrum doloremque velit quas commodi. Aliquid fugiat officia cumque, a dolor consectetur eligendi eveniet ab asperiores laborum inventore commodi expedita velit porro, illum ipsum. Amet, est nisi veritatis minima, esse beatae explicabo quod, ipsam repudiandae natus reprehenderit facere ratione. Quia incidunt fugiat aliquid doloribus, pariatur vel obcaecati autem ipsum consectetur nam facilis libero nobis similique placeat officia deleniti impedit, inventore, aut animi modi totam ratione dignissimos perspiciatis repudiandae. Ex iure asperiores, aliquid iste vitae culpa debitis vel atque iusto aspernatur, doloremque dolore officiis dolorem modi ullam temporibus?</p>
+				</div>
+				<div data-ng-class = "(activeView.show === 'delivery')? '' : 'view_hide'">
+					<h3>УСЛОВИЯ ДОСТАВКИ</h3>
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil, in, corporis. Repudiandae, veniam tempora accusamus earum maiores perspiciatis! Laboriosam, pariatur eligendi omnis aliquid provident reiciendis eaque tempore quos perferendis dicta. Fugiat nesciunt debitis totam cum maxime, ipsa iure earum consequuntur, temporibus. Quis sunt saepe, ad possimus! Qui laborum, laboriosam at. Eaque expedita omnis id, necessitatibus rerum impedit voluptate officiis ad culpa ut molestias tenetur deleniti sapiente asperiores quos cumque dolor. Consequatur aut, architecto cupiditate optio autem dicta voluptas soluta ipsa blanditiis. Fugit, vitae officia, quo ipsam tempora error perspiciatis dolor excepturi doloribus et, libero quae cupiditate. Obcaecati omnis ducimus accusantium.</p>
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatum laborum natus, veniam nemo nostrum doloremque velit quas commodi. Aliquid fugiat officia cumque, a dolor consectetur eligendi eveniet ab asperiores laborum inventore commodi expedita velit porro, illum ipsum. Amet, est nisi veritatis minima, esse beatae explicabo quod, ipsam repudiandae natus reprehenderit facere ratione. Quia incidunt fugiat aliquid doloribus, pariatur vel obcaecati autem ipsum consectetur nam facilis libero nobis similique placeat officia deleniti impedit, inventore, aut animi modi totam ratione dignissimos perspiciatis repudiandae. Ex iure asperiores, aliquid iste vitae culpa debitis vel atque iusto aspernatur, doloremque dolore officiis dolorem modi ullam temporibus?</p>	
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="info_comments_wrap">
+		<div id="add_comment">
+			<textarea rows="5" data-ng-model="userComment"  data-ng-change = "inspectLength()"></textarea>
+			<button data-ng-click="setComment()">оставить отзыв</button>
+			<span>{{infoMessage}}</span>
+		</div>
+		<h3>Отзывы покупателей:</h3>
+		<div class="comments_item" data-ng-repeat="comment in productComments | orderBy : '-dateMilisec'">
+			<span class="date">{{comment.date}}</span>
+			<p class="comment">
+				<span class="user_name">{{comment.user}} : </span>{{comment.text}}
+			</p>
+		</div>
+	</div>
+</div>
+

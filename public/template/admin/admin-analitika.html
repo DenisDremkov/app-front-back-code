@@ -1,0 +1,91 @@
+<div id="admin_analitika" data-ng-controller = "adminAnalitikaCtrl">	
+	<ul class="admin_analitika_menu clearfloat" >
+		<li data-ng-click = "toggleView('arhivMonth')" data-ng-class = "(activeView.arhivMonth)? 'admin_analitika_menu_active': ''">
+			<span>Архив</span>
+		</li>
+		<li data-ng-click = "toggleView('currentMonth')" data-ng-class = "(activeView.currentMonth)? 'admin_analitika_menu_active': ''" data-ng-show = "currentMonthDays">
+			<span>Детали</span>
+		</li>		
+	</ul>	
+	<div class="analitika_view">	
+		<div class="view_arhiv" data-ng-class = "(activeView.arhivMonth)? '' : 'view_hide' ">
+			<h2>Посещения сайта (текущий год)<br><span>вы можете посмотреть детальную информацию по каждому месяцу - <i class="fa fa-eye" aria-hidden="true"></i></span></h2>			
+			<div class="grafik_wrap">
+				<span class="grafic_vertical_descrip">Количество посещений, шт.</span>
+				<table class="grafik">
+					<tbody>
+						<tr>
+							<td class="grafik_item_wrap" data-ng-repeat = "month in dbYear" data-ng-style= "widthGraficItems">
+								<div class="admin_analitika_uniq_visits" data-ng-style = "setHeightItemGraficArhiv(month.month, 'uniqVisits')">{{month.uniqVisits}}</div>
+								<div class="admin_analitika_visits" data-ng-style = "setHeightItemGraficArhiv(month.month, 'visits')">{{month.visits}}</div>							
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="name_month_wrap clearfloat">
+					<h3 data-ng-click = "showDetails(month.month)" data-ng-repeat = "month in dbYear" data-ng-style= "widthGraficItems">
+						{{month.nameMonth}}<br>
+						<i class="fa fa-eye" aria-hidden="true"></i>
+					</h3>
+				</div>				
+				<table class = "grafic_gorizontal_descrip">
+					<tbody>
+						<tr>
+							<td><span class="descr_visits"></span></td>
+							<td> - количество посетителей</td>	
+						</tr>
+						<tr>
+							<td><span class="descr_visits_uniq"></span></td>
+							<td> - количество уникальных посетителей</td>	
+						</tr>
+					</tbody>
+				</table>	
+			</div>
+		</div>
+		<div class="view_current_month" data-ng-class = "(activeView.currentMonth)? '' : 'view_hide' ">
+			<h2>Динамика посещения сайта<br><span>(посещений в день)</span></h2>
+			<div class="current_month_descript">
+				<span>Месяц : <b>{{currentMonth.nameMonth}}</b>,  </span>
+				<span>Всего посетителей : <b>{{currentMonth.visits}}</b>,  </span>
+				<span>Всего уникальных посетителей : <b>{{currentMonth.uniqVisits}}</b>.</span>
+			</div>
+			<div class="grafik_wrap">
+				<span class="grafic_vertical_descrip">Количество посещений, шт.</span>				
+				<div class="table_wrap">
+					<div class="gorizontal_line line_top"><span>{{lineIndent.top}}</span></div>
+					<div class="gorizontal_line line_middle"><span>{{lineIndent.middle}}</span></div>
+					<div class="gorizontal_line line_bottom"><span>{{lineIndent.bottom}}.</span></div>
+					<table class="grafik">
+						<tbody>
+							<tr>
+								<td class="grafik_item_wrap" data-ng-repeat = "day in currentMonthDays" data-ng-style= "currentMonthDaysWidth">
+									<div class="admin_analitika_visits curr_month" data-ng-style = "bottom.visits[$index]" data-ng-mouseover = "hoverItemGrafic(day.day, 'over')" data-ng-mouseleave = "hoverItemGrafic(day.day, 'leave')">{{day.visits}}</div>	
+									<div class="admin_analitika_uniq_visits" data-ng-style = "bottom.uniqVisits[$index]" data-ng-mouseover = "hoverItemGrafic(day.day, 'over')" data-ng-mouseleave = "hoverItemGrafic(day.day, 'leave')">{{day.uniqVisits}}</div>		
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>				
+				<table>
+					<tbody>
+						<tr>
+							<td class="date_grafic" data-ng-repeat = "day in currentMonthDays" data-ng-style= "currentMonthDaysWidth" data-ng-class = "(activeItemGrafic.date === day.day)? 'date_grafic_active' : '' ">{{$index+1}}</td>
+						</tr>
+					</tbody>
+				</table>
+				<table class = "grafic_gorizontal_descrip">
+					<tbody>
+						<tr>
+							<td><span class="descr_visits"></span></td>
+							<td> - количество посетителей</td>	
+						</tr>
+						<tr>
+							<td><span class="descr_visits_uniq"></span></td>
+							<td> - количество уникальных посетителей</td>	
+						</tr>
+					</tbody>
+				</table>	
+			</div>
+		</div>
+	</div>
+</div>

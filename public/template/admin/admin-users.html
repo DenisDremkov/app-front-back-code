@@ -1,0 +1,121 @@
+<div id="admin_users" data-ng-controller = "adminUsersCtrl">
+	<div class="row">
+		<div class="col-xs-6">
+			<div class="items_group">
+				<span class="head_admin_users">Все пользователи : <b>{{summAllUsers}} чел.</b></span>
+				<div id="find_user">
+					<input type="text" data-ng-model="userLogin" placeholder="логин пользователя">
+					<button data-ng-click = "findUser()">найти пользователя по логину</button>
+				</div>
+				<div class="pagination_wrap clearfloat">
+					<div data-pagination data-amountPages="amountPages"></div>	
+				</div>
+				<table class="table table-bordered table-hover list_users">
+					<thead>
+						<tr>
+							<td>№ п/п</td>
+							<td>ID в базе</td>
+							<td>логин</td>
+							<td>детали</td>
+							<td>удалить</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr data-ng-repeat = "user in currentGroupUsers">
+							<td>{{$index + startIndex + 1}}</td>
+							<td>{{user._id}}</td>
+							<td>{{user.username}}</td>
+							<td><button data-ng-show = "{{user.rights !== 'admin'}}" data-ng-click = "userDetails(user._id, user.commentsId)" title = "детали"><i class="fa fa-eye" aria-hidden="true"></i></button></td>
+							<td><button data-ng-show = "user.rights !== 'admin'" data-ng-click = "deleteUser(user._id)" title = "удалить пользователя из бд"><i class="fa fa-trash-o" aria-hidden="true"></i></button></td>
+						</tr>
+					</tbody>
+				</table>	
+			</div>
+		</div>
+		<div class="col-xs-6">
+			<div id="current_user"  class="items_group">
+				<span>Выбранный пользователь</span>
+				<div class="row" data-ng-show = "currentUser">
+					<div class="col-xs-4">
+						<span>Аватар</span>
+						<div class="img_wrap">
+							<img data-ng-src="../../img/users/avatars/{{currentUserAvatar}}" alt="avatar">
+							<button data-ng-click = "deleteAvatar()"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+						</div>
+					</div>
+					<div class="col-xs-8">
+						<label>
+							<span>Логин</span>
+							<input type="text" data-ng-model="currentUser.username" class = "form-control" disabled>
+						</label><br>
+						<label>
+							<span>e-mail</span>
+							<input type="text" data-ng-model="currentUser.email" class = "form-control" disabled>
+						</label>
+					</div>	
+				</div>
+				<table class="table table-bordered" data-ng-show = "currentUser">
+					<thead>
+						<tr>
+							<td>Товары в<br>корзине</td>
+							<td>Комментарии<br>пользователя<br></td>
+							<td>Количество<br>визитов</td>
+							<td>Кол-во оставленных<br>рейтингов</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>{{currentUser.basket.length}}
+								<button data-ng-click = "showUserBasket(currentUser._id)" title="показать корзину"><i class="fa fa-eye" aria-hidden="true"></i></button>
+							</td>
+							<td>{{currentUserComments.length}}
+								<button data-ng-click = "showUserComments(currentUser._id)" title="показать комментарии"><i class="fa fa-eye" aria-hidden="true"></i></button>
+							</td>
+							<td>{{currentUser.visits}}</td>
+							<td>{{currentUser.raitings.length}}</td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="table_wrap" data-ng-class = "(activeItemsAdminUser.userComments)? '' : 'view_hide'">
+					<table class="table table-bordered" >
+						<thead>
+							<tr>
+								<td>Дата комментария,<br>Тип товара,<br>id товара</td>
+								<td>Комментарий</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="user_comments" data-ng-repeat = "comment in currentUserComments">
+								<td>{{comment.prettyDate}},<br>{{comment.productKind}},<br>{{comment.product}}
+									<button data-ng-click = "deleteComment(comment._id)" title="удалить комментарии из бд"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+								</td>
+								<td>{{comment.text}}</td>							
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="table_wrap" data-ng-class = "(activeItemsAdminUser.userBasket)? '' : 'view_hide'">
+					<table class="table table-bordered" >
+						<thead>
+							<tr>
+								<td>Тип</td>
+								<td>Id</td>
+								<td>Цена</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr data-ng-repeat = "product in currentUser.basket">
+								<td>{{product.kind}}</td>
+								<td>{{product._id}}</td>
+								<td>{{product.price}}</td>					
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>		
+		</div>
+	</div>
+</div>
+
+			
+	

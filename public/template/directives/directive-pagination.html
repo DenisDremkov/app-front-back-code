@@ -1,0 +1,17 @@
+
+
+<div class="custom_pagination unselectable">
+	<a ng-class = "(pag.first.disabled + ' ' + pag.first.current)" ng-click = "currentPage(1, 'first')">{{pag.first.val}}</a>
+	<a ng-class = "pag.prev.disabled" ng-click = "changePag('-', $event)"><i class="fa fa-angle-double-left"></i></a>
+	<a ng-class = "pag.prevDot.disabled">...</a>
+	
+	<a ng-class = "(pag.p1.disabled + ' ' + pag.p1.current)" ng-click = "currentPage(pag.p1.val, 'p1')">{{pag.p1.val}}</a>
+	<a ng-class = "(pag.p2.disabled + ' ' + pag.p2.current)" ng-click = "currentPage(pag.p2.val, 'p2')">{{pag.p2.val}}</a>
+	<a ng-class = "(pag.p3.disabled + ' ' + pag.p3.current)" ng-click = "currentPage(pag.p3.val, 'p3')">{{pag.p3.val}}</a>
+	<a ng-class = "(pag.p4.disabled + ' ' + pag.p4.current)" ng-click = "currentPage(pag.p4.val, 'p4')">{{pag.p4.val}}</a>
+	<a ng-class = "(pag.p5.disabled + ' ' + pag.p5.current)" ng-click = "currentPage(pag.p5.val, 'p5')">{{pag.p5.val}}</a>
+	
+	<a ng-class = "pag.nextDot.disabled">...</a>
+	<a ng-class = "pag.next.disabled" ng-click = "changePag('+', $event)"><i class="fa fa-angle-double-right"></i></a>
+	<a ng-class = "(pag.last.disabled + ' ' + pag.last.current)" ng-click = "currentPage(pag.last.val, 'last')">{{pag.last.val}}</a>
+</div>

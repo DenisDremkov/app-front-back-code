@@ -1,0 +1,93 @@
+<div data-ng-controller = "productsMainCtrl">
+	<div id="choice_wrap">
+		<ul id="select_product" class="clearfloat">
+			<li>
+				<a href="#/products/laptop" data-ng-click = "toggleProducts('laptop',$event)" data-ng-class ="(data.activeItems.currentProducts === 'laptop')? 'current_products' : ''">
+					<img src="../../img/admin/laptop.png" alt="laptop"><br>
+					<span>ноутбуки</span>
+				</a>
+			</li>
+			<li>
+				<a href="#/products/tablet" data-ng-click = "toggleProducts('tablet',$event)" data-ng-class ="(data.activeItems.currentProducts === 'tablet')? 'current_products' : ''">
+					<img src="../../img/admin/tablet.png" alt="tablet"><br>
+					<span>планшеты</span>
+				</a>
+			</li>
+		</ul>
+		<div id="select_bar">
+			<ul>
+				<li>
+					<a href="#"  class="nav_bar" data-ng-click ="toggleBar('sale', $event)" data-ng-class = "(data.activeItems.productsBar === 'sale')? 'bar_item_active' : ''">
+						<i class="fa fa-list" aria-hidden="true"></i>
+					</a>
+				</li>
+				<li>
+					<a href="#"  class="nav_bar" data-ng-click ="toggleBar('search', $event)" data-ng-class = "(data.activeItems.productsBar === 'search')? 'bar_item_active' : ''">
+						<i class="fa fa-search"></i>
+					</a>
+				</li>
+				<li id="bar_compare" data-ng-show = "data.compareProducts[0]">
+					<a href="#"  class="nav_bar" data-ng-click ="toggleBar('compare', $event)" data-ng-class = "(data.activeItems.productsBar === 'compare')? 'bar_item_active' : ''">
+						<i class="fa fa-balance-scale"></i>
+						<span  id="animate_number_compare">{{data.compareProducts.length}}</span>
+					</a>
+				</li>
+				<li data-ng-show = "data.currentProductInfo">
+					<a href="#"  class="nav_bar" data-ng-click ="toggleBar('info', $event)" data-ng-class = "(data.activeItems.productsBar === 'info')? 'bar_item_active' : ''">
+						<i class="fa fa-info"></i>
+					</a>
+				</li>
+			</ul>
+			<div class="bar_page_wrap">
+				<div data-ng-include = "data.url.bar" class="bar_page_animate"></div>
+			</div>
+		</div>
+	</div>
+	<div id="list_wrap" data-ng-show = "data.activeItems.mainList">
+		<div data-ng-hide = "data.activeItems.productsBar === 'search'" class="pagination_wrap clearfloat">
+			<div data-pagination data-amountPages="{{data.amountPages}}"></div>	
+		</div>
+		<div class="row">
+			<div class="col-xs-6 col-md-4  col-lg-3 col_custom" data-ng-repeat="product in view_mainList |  filter : {model : data.search.searchModel} | orderBy : data.orderByListFromSearch.nameProp">
+				<div class="products_item">
+					<div class="img_wrap">
+						<img data-ng-src="../img/products/small/{{product.kind}}/{{product.img.small}}" alt="small" >
+						<div data-popup-img data-id-img = {{product.img.big}} data-kind-product = {{product.kind}} title="увеличить изображение"></div>	
+					</div>
+					<h2>
+						<span>{{product.brand}}</span><br>{{product.model}}						
+					</h2>
+					<ul class="colours_wrap">
+						<li data-ng-repeat = "colour in product.colours" style = "background-color : {{colour}}"></li>
+					</ul>
+					<span data-ng-show = "product.sale.bool" class="sale">акция</span>
+					<div class="description clearfloat">
+						<div class="star_comment_wrap">
+							<div class="star_reiting_wrap">
+								<div data-star-reiting  data-set-reiting = "{{product.raiting.val}}" data-id-product = "{{product._id}}" data-kind-product = "{{product.kind}}"></div>
+								<span data-ng-class ="(rootUser.objRaiting[product._id])? 'raiting_prev_session' : '' ">{{product.raiting.val}}</span> 
+							</div><br>
+							<span>{{product.comments.summ}} комментариев</span>	
+						</div>
+						<span>{{product.price}} грн.</span>
+					</div>
+					<div class="btn_wrap clearfloat">
+						<button class="btn_compare" data-ng-class = "(data.checkedButtonsCompare[product._id])? 'btn_checked' : '' "	title="добавить к сравнению" data-ng-click = "addCompare(product)">
+							<i class="fa fa-balance-scale"></i>
+							<i class="fa fa-check" aria-hidden="true" ></i>
+						</button>
+						<button class="btn_info"	title="подробная информация" data-ng-click = "showInfo(product)"><i class="fa fa-info"></i></button>
+						<button  class="btn_basket" data-ng-class = "(data.checkedButtonsBasket[product._id])? 'btn_checked' : '' " 	title="добавить в корзину" data-ng-click = 'toggleProductBasket(product)'>
+							В корзину
+							<i class="fa fa-shopping-basket"></i>
+							<i class="fa fa-check-circle-o" aria-hidden="true" ></i>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+

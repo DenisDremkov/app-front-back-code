@@ -1,0 +1,17 @@
+
+<div data-ng-controller = "adminMainCtrl">
+	<div data-inspect-admin id="admin_wrap" >	
+		<ul class="nav nav-tabs nav-justified">
+			<li data-ng-click="toggleTabs('products', $event)" data-ng-class = "(currentTab === 'products')? 'active' : ''" class="active">
+				<a href="#" onclick="return false">товары</a>
+			</li>
+			<li data-ng-click="toggleTabs('users', $event)" data-ng-class = "(currentTab === 'users')? 'active' : ''">
+				<a href="#" onclick="return false">пользователи</a>
+			</li>
+			<li data-ng-click="toggleTabs('analitika', $event)" data-ng-class = "(currentTab === 'analitika')? 'active' : ''">
+				<a href="#" onclick="return false">аналитка</a>
+			</li>
+		</ul>
+		<div id="admin_view" data-ng-include = "currentTemplate"></div>	
+	</div>
+</div>
